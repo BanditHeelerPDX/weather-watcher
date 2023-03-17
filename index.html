@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/style.css">
+    <title>WeatherWatchers</title>
+</head>
+<body>
+    <header id="locDate" class="locDate">
+        <h1 id="location" class="location"></h1>
+        <h2 id="date" class="date"></h2>
+        <nav id="navBarEl" class="navBarEl">
+            <ul id="navList" class="navList">
+              <li id="navLink" class="navLink"></li>  
+              <li id="navLink" class="navLink"></li>  
+              <li id="navLink" class="navLink"></li>  
+              <li id="navLink" class="navLink"></li>  
+            </ul>
+        </nav>
+    </header>
+    <section id="searchBar" class="searchBar" role="search">
+        <form action="#" method="get">
+            <fieldset>
+                <legend id="searchFieldLegend">
+                    Watch the weather
+                </legend>
+                <label for="search">
+                    <input type="search" id="search" name="search" placeholder="Where's the weather?" maxlength="150">
+                </label>
+                <button type="submit" title="Watch the weather" id="searchBtn" class="searchBtn">
+                    <i id="btnText" class="btnText">satellite beam</i>
+                </button>
+            </fieldset>
+        </form>
+    </section>
+    <br>
+    <section id="currentWeatherEl" class="currentWeatherEl"></section>
+    <section id="fiveDayForecast" class="fiveDayForecast"></section>
+    <section id="persistentLocations" class="persistentLocations"></section>
+    
+    
+
+
+
+
+
+    <script src="/script/script.js"></script>
+</body>
+</html>
