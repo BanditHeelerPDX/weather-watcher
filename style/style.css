@@ -1,3 +1,52 @@
+body {
+    background-image: url('/images/Hood-from-grateful-vineyard.JPEG');
+}
+
+
+.locDate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.location {
+    text-align: center;
+    margin: 0;
+}
+
+.date {
+    text-align: right;
+    margin: 0;
+}
+
+.navList {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navLink {
+    margin-right: 10px;
+}
+
+.navLink a {
+    display: block;
+    padding: 5px;
+    background-color: #eee;
+    color: #333;
+    text-decoration: none;
+}
+
+.navLink a:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+
+
 .container {
     display: grid;
     grid-template-rows: auto auto; 
@@ -28,3 +77,19 @@
     padding: 10px;
     text-align: center;
   }
+
+  @media only screen and (max-width: 767px) {
+    .locDate {
+        flex-direction: column;
+    }
+    .location, .date {
+        margin-bottom: 10px;
+    }
+    .navList {
+        justify-content: center;
+    }
+    .navLink {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+}
