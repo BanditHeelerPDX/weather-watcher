@@ -61,19 +61,100 @@ submit.addEventListener('click', function(event) {
     console.error(error);
     
   });
+
+  const wizardURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`;
+
+    fetch(wizardURL)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const forecast = data.list;
+
+        const forecastEl = document.getElementById("fiveDayForecast");
+        forecastEl.innerHTML = '';
+
+        for (let i = 0; i < forecast.length; i += 8) {
+          const forecastData = forecast[i];
+
+          const date = new Date(forecastData.dt * 1000);
+          const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
+
+          const minTemp = parseInt(forecastData.main.temp_min);
+          const maxTemp = parseInt(forecastData.main.temp_max);
+          const chanceOfPrecip = forecastData.pop * 100;
+          const cloudiness = forecastData.clouds.all;
+
+          const forecastCard = document.createElement("div");
+          forecastCard.classList.add("card");
+
+          const cardBody = document.createElement("div");
+          cardBody.classList.add("card-body");
+
+          const dayOfWeekEl = document.createElement("h5");
+          dayOfWeekEl.textContent = dayOfWeek;
+
+          const minTempEl = document.createElement("p");
+          minTempEl.textContent = `Min Temp: ${minTemp}F`;
+
+          const maxTempEl = document.createElement("p");
+          maxTempEl.textContent = `Max Temp: ${maxTemp}F`;
+
+          const chanceOfPrecipEl = document.createElement("p");
+          chanceOfPrecipEl.textContent = `Chance of Precipitation: ${chanceOfPrecip}%`;
+
+          const cloudinessEl = document.createElement("p");
+          cloudinessEl.textContent = `Cloudiness: ${cloudiness}%`;
+
+          cardBody.appendChild(dayOfWeekEl);
+          cardBody.appendChild(minTempEl);
+          cardBody.appendChild(maxTempEl);
+          cardBody.appendChild(chanceOfPrecipEl);
+          cardBody.appendChild(cloudinessEl);
+
+          forecastCard.appendChild(cardBody);
+          forecastEl.appendChild(forecastCard);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  })
 })
 .catch(error => {
     console.error(error);
 })
-});
+
+// function populateLocations(locations) {
+//     persistentLocationsEl.innerHTML = '';
+//     const beenThere = document.createElement('ul');
+//     const doneThat = [];
+//     for (let location of locations) {
+//         if (!doneThat.includes(location)) {
+//         const visited = document.createElement('li');
+//         visited.textContent = location;
+//         beenThere.appendChild(visited);
+//         doneThat.push(location);
+//       }
+//     }
+//     persistentLocationsEl.appendChild(beenThere);
+// }
 
 function populateLocations(locations) {
     persistentLocationsEl.innerHTML = '';
     const beenThere = document.createElement('ul');
     for (let location of locations) {
+      if (!document.querySelector(`[data-location="${location}"]`)) {
         const visited = document.createElement('li');
-        visited.textContent = location;
+        const link = document.createElement('a');
+        link.setAttribute('href', '#');
+        link.setAttribute('data-location', location);
+        link.textContent = location;
+        visited.appendChild(link);
         beenThere.appendChild(visited);
+        link.addEventListener('click', () => {
+          fetchWeatherData(location);
+        });
+      }
     }
     persistentLocationsEl.appendChild(beenThere);
-}
+  }
