@@ -29,34 +29,42 @@ submit.addEventListener("click", function (event) {
           .then((data) => {
             console.log(data);
             const name = data.name;
+            const weatherIcon = data.weather[0].icon;
             const mainTemp = parseInt(data.main.temp);
             const feelsLikeTemp = parseInt(data.main.feels_like);
             const minTemp = parseInt(data.main.temp_min);
             const maxTemp = parseInt(data.main.temp_max);
+            const windSpeed = parseInt(data.wind.speed);
             const cloudiness = data.clouds.all;
             const snowVolumeLast3Hrs = data.snow ? data.snow["3h"] : "N/A";
 
+            const weatherIconEl = document.createElement('img');
             const mainTempEl = document.createElement("div");
             const feelsLikeTempEl = document.createElement("p");
             const minTempEl = document.createElement("p");
             const maxTempEl = document.createElement("p");
+            const windSpeedEl = document.createElement('p');
             const cloudinessEl = document.createElement("p");
             const snowVolumeLast3HrsEl = document.createElement("p");
 
+            weatherIconEl.setAttribute('src', `https://openweathermap.org/img/w/${weatherIcon}.png`);
             locationEl.textContent = `The weather in ${name}:`
-            mainTempEl.textContent = `Main Temp: ${mainTemp}F`;
+            mainTempEl.textContent = `Current Temp: ${mainTemp}F`;
             feelsLikeTempEl.textContent = `Feels Like Temp: ${feelsLikeTemp}F`;
-            minTempEl.textContent = `Min Temp: ${minTemp}F`;
-            maxTempEl.textContent = `Max Temp: ${maxTemp}F`;
+            minTempEl.textContent = `Min: ${minTemp}F`;
+            maxTempEl.textContent = `Max: ${maxTemp}F`;
+            windSpeedEl.textContent = `Wind speed: ${windSpeed}mph`;
             cloudinessEl.textContent = `Cloudiness: ${cloudiness}%`;
             snowVolumeLast3HrsEl.textContent = `Snow Volume (last 3 hours): ${snowVolumeLast3Hrs}`;
 
             const containerEl = document.getElementById("currentWeatherEl");
             containerEl.innerHTML = "";
+            containerEl.appendChild(weatherIconEl);
             containerEl.appendChild(mainTempEl);
             containerEl.appendChild(feelsLikeTempEl);
             containerEl.appendChild(minTempEl);
             containerEl.appendChild(maxTempEl);
+            containerEl.appendChild(windSpeedEl);
             containerEl.appendChild(cloudinessEl);
             containerEl.appendChild(snowVolumeLast3HrsEl);
 
@@ -86,6 +94,7 @@ submit.addEventListener("click", function (event) {
                 weekday: "long",
               });
 
+              const weatherIcon = forecastData.weather[0].icon;
               const minTemp = parseInt(forecastData.main.temp_min);
               const maxTemp = parseInt(forecastData.main.temp_max);
               const chanceOfPrecip = parseInt(forecastData.pop * 100);
@@ -97,8 +106,11 @@ submit.addEventListener("click", function (event) {
               const cardBody = document.createElement("div");
               cardBody.classList.add("card-body");
 
-              const dayOfWeekEl = document.createElement("h4");
+              const dayOfWeekEl = document.createElement("h3");
               dayOfWeekEl.textContent = dayOfWeek;
+
+              const weatherIconEl = document.createElement('img');
+              weatherIconEl.setAttribute('src', `https://openweathermap.org/img/w/${weatherIcon}.png`);
 
               const minTempEl = document.createElement("p");
               minTempEl.textContent = `Min Temp: ${minTemp}F`;
@@ -113,6 +125,7 @@ submit.addEventListener("click", function (event) {
               cloudinessEl.textContent = `Cloudiness: ${cloudiness}%`;
 
               cardBody.appendChild(dayOfWeekEl);
+              cardBody.appendChild(weatherIconEl);
               cardBody.appendChild(minTempEl);
               cardBody.appendChild(maxTempEl);
               cardBody.appendChild(chanceOfPrecipEl);
@@ -126,6 +139,7 @@ submit.addEventListener("click", function (event) {
             console.error(error);
           });
       });
+      userInput.value = '';
   }
   
 // function populateLocations(locations) {
@@ -143,22 +157,41 @@ submit.addEventListener("click", function (event) {
 //     persistentLocationsEl.appendChild(beenThere);
 // }
 
+// function populateLocations(locations) {
+//   persistentLocationsEl.innerHTML = "";
+//   const beenThere = document.createElement("ul");
+//   for (let location of locations) {
+//     if (!document.querySelector(`[data-location="${location}"]`)) {
+//       const visited = document.createElement("li");
+//       const link = document.createElement("a");
+//       link.setAttribute("href", "#");
+//       link.setAttribute("data-location", location);
+//       link.textContent = location;
+//       visited.appendChild(link);
+//       beenThere.appendChild(visited);
+//       link.addEventListener("click", () => {
+//         doTheDamnThang(location);
+//       });
+//     }
+//   }
+//   persistentLocationsEl.appendChild(beenThere);
+// }
+
 function populateLocations(locations) {
   persistentLocationsEl.innerHTML = "";
-  const beenThere = document.createElement("ul");
-  for (let location of locations) {
-    if (!document.querySelector(`[data-location="${location}"]`)) {
-      const visited = document.createElement("li");
-      const link = document.createElement("a");
-      link.setAttribute("href", "#");
-      link.setAttribute("data-location", location);
-      link.textContent = location;
-      visited.appendChild(link);
-      beenThere.appendChild(visited);
-      link.addEventListener("click", () => {
-        doTheDamnThang(location);
-      });
-    }
-  }
-  persistentLocationsEl.appendChild(beenThere);
+  const uniqueLocations = Array.from(new Set(locations)); // Get unique locations from the persistentLocations array
+  uniqueLocations.forEach((location) => {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.textContent = location;
+    a.href = "#";
+    a.onclick = () => {
+      userInput.value = location;
+      doTheDamnThang();
+    };
+    li.appendChild(a);
+    persistentLocationsEl.appendChild(li);
+  });
+  persistentLocations = uniqueLocations;
 }
+

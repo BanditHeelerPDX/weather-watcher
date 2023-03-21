@@ -1,5 +1,7 @@
 body {
     background-image: url('/images/Hood-from-grateful-vineyard.JPEG');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 
@@ -46,39 +48,42 @@ body {
 }
 
 
-
-.container {
-    display: grid;
-    grid-template-rows: auto auto; 
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 20px;
-  }
-  
-  .currentWeatherEl {
+.currentWeatherEl {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
   
-  .currentWeatherEl div {
+.currentWeatherEl div {
     margin-bottom: 10px;
   }
   
-  .fiveDayForecast {
+.fiveDayForecast {
+    
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
   }
   
-  .fiveDayForecast .card {
+.fiveDayForecast .card {
+    background-color: rgba(199, 198, 198, 0.35);
     border: 1px solid black;
     border-radius: 25px;
     padding: 10px;
     text-align: center;
   }
 
-  @media only screen and (max-width: 767px) {
+@media only screen and (max-width: 752px) {
+    .fiveDayForecast {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .fiveDayForecast .card {
+        flex-basis: 40%;
+        margin: 5px;
+    }
     .locDate {
         flex-direction: column;
     }
